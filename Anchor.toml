@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-er_pyth = "9udcwDXrPDs6MgCxEh7tKp9jBzpK41AaG6GXhgpuk8pB"
+er_pyth = "6WP6oqLcfsEwdQurZAa7yvKgRJ9aAhU13CD84xREBNy"
 
 [registry]
 url = "https://api.apr.dev"

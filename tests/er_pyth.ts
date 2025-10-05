@@ -58,6 +58,36 @@ describe("er_pyth", () => {
     console.log(`Transaction Signature: ${tx}`)
   });
 
+  it("Fetch Price 30 Times on Regular Devnet", async () => {
+    const iterations = 30;
+    const startTime = Date.now();
+
+    console.log(`Starting to fetch price ${iterations} times on Regular Devnet...`);
+
+    for (let i = 0; i < iterations; i++) {
+      const iterationStart = Date.now();
+      
+      const tx = await program.methods.fetchPrice().accountsPartial({
+        signer: provider.wallet.publicKey,
+        priceUpdateAccount: SOLUSDC,
+      }).signers([provider.wallet.payer]).rpc();
+
+      const iterationEnd = Date.now();
+      const iterationDuration = iterationEnd - iterationStart;
+
+      console.log(`Iteration ${i + 1}: Signature: ${tx}, Duration: ${iterationDuration}ms`);
+    }
+
+    const endTime = Date.now();
+    const totalDuration = endTime - startTime;
+
+    console.log(`\n===== Regular Devnet Performance Summary =====`);
+    console.log(`Total iterations: ${iterations}`);
+    console.log(`Total duration: ${totalDuration}ms`);
+    console.log(`Average duration per fetch: ${(totalDuration / iterations).toFixed(2)}ms`);
+    console.log(`==============================================\n`);
+  });
+
   it("Delegate Price Account", async () => {
     let validatorKey = await getClosestValidator(routerConnection);
     let commitFrequency = 30000;
@@ -93,6 +123,42 @@ describe("er_pyth", () => {
     );
 
     console.log(`Price Update Transaction Signature: ${signature}`);
+  });
+
+  it("Fetch Price 30 Times on ER", async () => {
+    const iterations = 30;
+    const startTime = Date.now();
+
+    console.log(`Starting to fetch price ${iterations} times on Ephemeral Rollup...`);
+
+    for (let i = 0; i < iterations; i++) {
+      const iterationStart = Date.now();
+      
+      const tx = await program.methods.fetchPrice().accountsPartial({
+        signer: provider.wallet.publicKey,
+        priceUpdateAccount: SOLUSDC,
+      }).transaction();
+
+      const signature = await sendMagicTransaction(
+        routerConnection,
+        tx,
+        [provider.wallet.payer]
+      );
+
+      const iterationEnd = Date.now();
+      const iterationDuration = iterationEnd - iterationStart;
+
+      console.log(`Iteration ${i + 1}: Signature: ${signature}, Duration: ${iterationDuration}ms`);
+    }
+
+    const endTime = Date.now();
+    const totalDuration = endTime - startTime;
+
+    console.log(`\n===== Performance Summary =====`);
+    console.log(`Total iterations: ${iterations}`);
+    console.log(`Total duration: ${totalDuration}ms`);
+    console.log(`Average duration per fetch: ${(totalDuration / iterations).toFixed(2)}ms`);
+    console.log(`===============================\n`);
   });
 
   it("Commit and Undelegate Price Account", async () => {

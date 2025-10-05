@@ -5,7 +5,7 @@ use ephemeral_rollups_sdk::anchor::{commit, delegate, ephemeral};
 use ephemeral_rollups_sdk::cpi::DelegateConfig;
 use ephemeral_rollups_sdk::ephem::{commit_accounts, commit_and_undelegate_accounts};
 
-declare_id!("9udcwDXrPDs6MgCxEh7tKp9jBzpK41AaG6GXhgpuk8pB");
+declare_id!("6WP6oqLcfsEwdQurZAa7yvKgRJ9aAhU13CD84xREBNy");
 
 #[program]
 pub mod er_pyth {
